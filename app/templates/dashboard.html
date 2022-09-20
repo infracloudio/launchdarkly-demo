@@ -1,0 +1,14 @@
+{% extends 'base.html' %}
+
+{% block stylesheet %}
+<link href="{{ url_for('static', filename='css/notification.css') }}" rel="stylesheet">
+<script src="{{url_for('static',filename='js/notification.js')}}"> </script>
+{% endblock %}
+
+{% block header %}
+
+{% include 'beta/partials/nav-notification.html' %}
+
+{% endblock %}
+
+

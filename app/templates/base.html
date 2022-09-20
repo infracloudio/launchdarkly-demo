@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    
+    <title> LaunchDarkly Demo </title>
+    
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.1/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+    <link href="https://getbootstrap.com/docs/5.2/assets/css/docs.css" rel="stylesheet">
+    
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.1/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.1/jquery.min.js"></script>
+    
+    <link href="{{ url_for('static', filename='css/custom.css') }}" rel="stylesheet">
+    
+    {% block stylesheet %}
+      <style>
+        body{
+            background-image: url("https://launchdarkly.com/static/5882b5c8fb60fd8d778868d9afd4a913/453a0/083366ea-48f8-4c43-b339-bf7f2c213930_Group%2B3734.webp");
+            background-repeat: no-repeat;
+            background-position: right top;
+            background-blend-mode: luminosity;
+            }
+      </style>
+    {% endblock %}
+</head>
+
+<body>
+    <header>
+        {% block header %} {% include 'nav.html' %} {% endblock %}
+    </header>
+
+    <main>          
+        {% block content %}{% endblock %}
+    </main>
+
+       {% include "beta/partials/dark-button.html" %}
+
+    <script src="{{url_for('static',filename='js/dark-mode.js')}}"> </script>
+
+   {% include "footer.html" %}
+
+</body>
+</html>
