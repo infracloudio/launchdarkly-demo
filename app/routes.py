@@ -1,22 +1,22 @@
-from flask import Flask, render_template
+from flask import render_template
+from flask import Blueprint
 
-app = Flask(__name__)
-app.secret_key = b'_5#y2L"F4Q8z\n\xec]/'
+core = Blueprint("core", __name__)
 
-@app.route('/')
+@core.route('/')
 def index():
     return render_template('index.html')
 
 
-@app.route('/fashion')
+@core.route('/fashion')
 def fashion():
     return render_template('shop-fashion.html')
 
-@app.route('/electronics')
+@core.route('/electronics')
 def electronics():
     return render_template('shop-electronic.html')
 
-@app.route('/dashboard')
+@core.route('/dashboard')
 def dashboard():
     return render_template('dashboard.html')
 

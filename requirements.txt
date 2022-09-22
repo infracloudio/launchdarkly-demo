@@ -1,0 +1,10 @@
+
+Flask==2.2.2
+Flask-Bootstrap==3.3.7.1
+Flask-SQLAlchemy==2.5.1
+gunicorn==20.1.0
+
+launchdarkly-api @ git+https://github.com/launchdarkly/api-client-python.git@e3475bba72782cc660f11b1bc7f41f406b422ba2
+launchdarkly-server-sdk==7.5.0
+
+python-dotenv==0.21.0
