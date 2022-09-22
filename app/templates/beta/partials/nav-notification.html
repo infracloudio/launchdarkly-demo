@@ -1,7 +1,7 @@
 <nav class="navbar navbar-expand-lg navbar-dark bg-primary">
     <!-- <nav class="navbar navbar-expand-lg navbar-dark bg-dark"> -->
     <div class="container-fluid">
-        <a class="navbar-brand" href="{{url_for('index')}}">LD Demo</a>
+        <a class="navbar-brand" href="{{url_for('core.index')}}">LD Demo</a>
 
         <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarColor02"
             aria-controls="navbarColor02" aria-expanded="false" aria-label="Toggle navigation">
@@ -11,8 +11,8 @@
         <div class="collapse navbar-collapse" id="navbarColor02">
 
             <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-                <li class="nav-item"> <a class="nav-link" href="{{url_for('fashion')}}">Fashion</a> </li>
-                <li class="nav-item"> <a class="nav-link" href="{{ url_for('electronics')}}">Electronics</a> </li>
+                <li class="nav-item"> <a class="nav-link" href="{{url_for('core.fashion')}}">Fashion</a> </li>
+                <li class="nav-item"> <a class="nav-link" href="{{ url_for('core.electronics')}}">Electronics</a> </li>
                 
 
                 <!-- hidden link -->
@@ -35,7 +35,7 @@
                     </div>
                 </div>
             </div>
-            <button class="btn btn-outline-light d-flex me-2"> <a class="nav-link" href="{{ url_for('dashboard')}}">Dashboard</a> </button>
+            <button class="btn btn-outline-light d-flex me-2"> <a class="nav-link" href="{{ url_for('core.dashboard')}}">Dashboard</a> </button>
 
             <!-- make it a feature flag -->
             <form class="d-flex" role="search" data-form-type="">
