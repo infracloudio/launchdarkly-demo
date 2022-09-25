@@ -1,12 +1,13 @@
-from flask import render_template
-from flask import Blueprint
+from flask import Blueprint, flash, redirect, render_template, request, url_for
+
+from app.db import db
+from app.models import User
 
 core = Blueprint("core", __name__)
 
 @core.route('/')
 def index():
     return render_template('index.html')
-
 
 @core.route('/fashion')
 def fashion():
@@ -19,4 +20,7 @@ def electronics():
 @core.route('/dashboard')
 def dashboard():
     return render_template('dashboard.html')
+
+
+# API's
 
