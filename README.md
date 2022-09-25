@@ -1,4 +1,4 @@
-# LauncDarkly Demo
+# LaunchDarkly Demo
 
 # How to run locally
 
