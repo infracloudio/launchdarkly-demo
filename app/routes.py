@@ -7,21 +7,32 @@ from app.models import User
 
 core = Blueprint("core", __name__)
 
+
 @core.route('/')
 def index():
+    if current_user.is_authenticated:
+        return redirect(url_for("core.fashion"))
+
     return render_template('index.html')
 
+
 @core.route('/fashion')
+@login_required
 def fashion():
     return render_template('shop-fashion.html')
 
+
 @core.route('/electronics')
+@login_required
 def electronics():
     return render_template('shop-electronic.html')
 
+
 @core.route('/dashboard')
+@login_required
 def dashboard():
     return render_template('dashboard.html')
+
 
 @core.route('/register', methods=["GET", "POST"])
 def register():
@@ -36,33 +47,35 @@ def register():
         if request.form["inputPassword"] != request.form["confirmPassword"]:
             flash("Passwords must match")
             return redirect(url_for("core.register"))
-        
+
         user.set_password(request.form["inputPassword"])
-        
+
         db.session.add(user)
         db.session.commit()
         flash("Congratulations, you are now a registered user!")
         login_user(user)
-        return redirect(url_for("core.index"))
+        return redirect(url_for("core.dashboard"))
     return render_template('register.html')
 
 
-@core.route("/login", methods=["GET", "POST"])
+@core.route("/login", methods=["POST"])
 def login():
     if current_user.is_authenticated:
         flash("you're authenticated")
-        return redirect(url_for("core.index"))
+        return redirect(url_for("core.dashboard"))
     if request.method == "POST":
         user = User.query.filter_by(email=request.form["userEmail"]).first()
         if user is None or not user.check_password(request.form["inputPassword"]):
             flash("Invalid username or password")
-            return redirect(url_for("core.login"))
+            return redirect(url_for("core.index"))
         login_user(user)
+
         next_page = request.args.get("next")
         if not next_page or urlparse(next_page).netloc != "":
-            next_page = url_for("core.index")
+            next_page = url_for("core.dashboard")
         return redirect(next_page)
     return render_template("login.html", title="Sign In")
+
 
 @core.route("/logout")
 def logout():
@@ -70,6 +83,4 @@ def logout():
     return redirect(url_for("core.index"))
 
 
-
 # API's
-

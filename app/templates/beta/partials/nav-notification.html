@@ -13,7 +13,7 @@
             <ul class="navbar-nav me-auto mb-2 mb-lg-0">
                 <li class="nav-item"> <a class="nav-link" href="{{url_for('core.fashion')}}">Fashion</a> </li>
                 <li class="nav-item"> <a class="nav-link" href="{{ url_for('core.electronics')}}">Electronics</a> </li>
-                
+
 
                 <!-- hidden link -->
                 <!-- <li class="nav-item"> <a class="nav-link" href="#">Career</a> </li> -->
@@ -22,20 +22,21 @@
 
             <div class="notifications " id="box">
                 <h2>Notifications - <span>2</span></h2>
-                <div class="notifications-item">  <i class="fas fa-shopping-bag" style="padding: 10px"></i> 
+                <div class="notifications-item"> <i class="fas fa-shopping-bag" style="padding: 10px"></i>
                     <div class="text">
                         <h4> 1 item in cart</h4>
                         <p>Apple watch added to your cart!</p>
                     </div>
                 </div>
-                <div class="notifications-item"> <i class="fas fa-shipping-fast" style="padding: 10px"></i> 
+                <div class="notifications-item"> <i class="fas fa-shipping-fast" style="padding: 10px"></i>
                     <div class="text">
                         <h4>Your order is dispatched!</h4>
                         <p>Track your order</p>
                     </div>
                 </div>
             </div>
-            <button class="btn btn-outline-light d-flex me-2"> <a class="nav-link" href="{{ url_for('core.dashboard')}}">Dashboard</a> </button>
+            <button class="btn btn-outline-light d-flex me-2"> <a class="nav-link"
+                    href="{{ url_for('core.dashboard')}}">Dashboard</a> </button>
 
             <!-- make it a feature flag -->
             <form class="d-flex" role="search" data-form-type="">
@@ -44,6 +45,10 @@
                     data-dashlane-label="true">Search</button>
             </form>
             <!-- ----- -->
+            {% if current_user.is_authenticated %}
+            <button class="btn btn-outline-dark d-flex me-2 ms-2"> <a class="nav-link"
+                    href="{{ url_for('core.logout')}}"> Logout </a></button>
+            {% endif %}
         </div>
     </div>
 </nav>

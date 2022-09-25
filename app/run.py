@@ -35,6 +35,7 @@ def create_app():
 
     app.register_blueprint(core)
     login_manager.init_app(app)
+    login_manager.login_view = "core.index"
 
     with app.app_context():
         from app.models import User
