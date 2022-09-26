@@ -1,10 +1,10 @@
+import json
 from urllib.parse import urlparse
 from flask import Blueprint, flash, redirect, render_template, request, url_for
 from flask_login import current_user, login_required, login_user, logout_user
-
 from app.db import db
 from app.models import User
-
+from flask import current_app
 core = Blueprint("core", __name__)
 
 
@@ -13,25 +13,37 @@ def index():
     if current_user.is_authenticated:
         return redirect(url_for("core.fashion"))
 
-    return render_template('index.html')
+    user = current_user.get_ld_user()
+    current_flag_state = current_app.ldclient.all_flags_state(user)
+    user_json = json.dumps(user)
+    return render_template('index.html', all_flags=current_flag_state.to_json_string(), user_context=user_json)
 
 
 @core.route('/fashion')
 @login_required
 def fashion():
-    return render_template('shop-fashion.html')
+    user = current_user.get_ld_user()
+    current_flag_state = current_app.ldclient.all_flags_state(user)
+    user_json = json.dumps(user)
+    return render_template('shop-fashion.html',all_flags=current_flag_state.to_json_string(), user_context=user_json)
 
 
 @core.route('/electronics')
 @login_required
 def electronics():
-    return render_template('shop-electronic.html')
+    user = current_user.get_ld_user()
+    current_flag_state = current_app.ldclient.all_flags_state(user)
+    user_json = json.dumps(user)
+    return render_template('shop-electronic.html',all_flags=current_flag_state.to_json_string(), user_context=user_json)
 
 
 @core.route('/dashboard')
 @login_required
 def dashboard():
-    return render_template('dashboard.html')
+    user = current_user.get_ld_user()
+    current_flag_state = current_app.ldclient.all_flags_state(user)
+    user_json = json.dumps(user)
+    return render_template('dashboard.html',all_flags=current_flag_state.to_json_string(), user_context=user_json)
 
 
 @core.route('/register', methods=["GET", "POST"])
@@ -74,7 +86,6 @@ def login():
         if not next_page or urlparse(next_page).netloc != "":
             next_page = url_for("core.dashboard")
         return redirect(next_page)
-    return render_template("login.html", title="Sign In")
 
 
 @core.route("/logout")
@@ -82,5 +93,3 @@ def logout():
     logout_user()
     return redirect(url_for("core.index"))
 
-
-# API's
