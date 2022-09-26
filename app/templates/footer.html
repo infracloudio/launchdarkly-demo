@@ -1,4 +1,58 @@
 {% block footer %}
 <footer class="footer">Made &hearts; by the Sudhanshu Prajapati | Developer Advocate &middot; &copy; 2022</footer>
+<script>
+    var renderButton = function() {
+         var showFeature = ldclient.variation("dark-theme-button", false);
+         var displayWidget = document.getElementById('dark-theme-button');
+         if (displayWidget) {
+             if (showFeature) {
+                 displayWidget.style.display = "block";
+             } else {
+                 displayWidget.style.display = "none";
+             }
+         }
 
+
+    }
+    var searchfeature = function() {
+         var searchFeatureFlag = ldclient.variation("search-feature", false);
+         var showSearchBar = document.getElementById('search-feature');
+         if (showSearchBar) {
+             if (searchFeatureFlag) {
+                console.log("Show search feature")
+                showSearchBar.style.display = "block";
+             } else {
+                console.log("Do not show search feature")
+                showSearchBar.style.display = "none";
+             }
+         }
+
+    }
+    var navDarkFeature = function() {
+        var navDarkFlag = ldclient.variation("nav-dark", false);
+        var navDark = document.getElementById('nav-dark');
+        if (navDark) {
+            if (navDarkFlag) {
+               navDark.classList.add("bg-dark");
+               navDark.classList.remove("bg-primary")
+            } else {
+                navDark.classList.remove("bg-dark");
+                navDark.classList.add("bg-primary")
+            }
+        }
+
+   }
+    ldclient.waitForInitialization().then(function() {
+         renderButton();
+         searchfeature();
+         navDarkFeature();
+    })
+    ldclient.on('change', function() {
+        renderButton();
+        searchfeature();
+        navDarkFeature();
+    });
+    
+
+</script>
 {% endblock %}
