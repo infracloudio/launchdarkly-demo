@@ -2,9 +2,10 @@
 Utility Functions
 """
 import logging
+from pickle import FALSE
 import socket
-
-
+from app.models import Products
+from app.db import db
 
 def get_ld_non_human_user(request=None):
     """

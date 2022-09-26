@@ -1,16 +1,22 @@
 import json
-from urllib import response
+import time
 from urllib.parse import urlparse
 from flask import Blueprint, flash, redirect, render_template, request, url_for
 from flask_login import current_user, login_required, login_user, logout_user
 from app.db import db
-from app.models import User
+from app.models import Products, User
 from flask import current_app
 core = Blueprint("core", __name__)
 
 
 @core.route('/')
 def index():
+
+    # artifical delay
+
+    if current_app.ldclient.variation('artificial-delay', current_user.get_ld_user(), False):
+        time.sleep(10)
+
     if current_user.is_authenticated:
         return redirect(url_for("core.fashion"))
 
@@ -27,10 +33,12 @@ def index():
 @core.route('/fashion')
 @login_required
 def fashion():
+
     user = current_user.get_ld_user()
     current_flag_state = current_app.ldclient.all_flags_state(user)
     user_json = json.dumps(user)
-    return render_template('shop-fashion.html', all_flags=current_flag_state.to_json_string(), user_context=user_json)
+    products = Products.query.filter_by(product_type='fashion').all()
+    return render_template('shop.html', all_flags=current_flag_state.to_json_string(), user_context=user_json,products=products)
 
 
 @core.route('/electronics')
@@ -39,7 +47,8 @@ def electronics():
     user = current_user.get_ld_user()
     current_flag_state = current_app.ldclient.all_flags_state(user)
     user_json = json.dumps(user)
-    return render_template('shop-electronic.html', all_flags=current_flag_state.to_json_string(), user_context=user_json)
+    products = Products.query.filter_by(product_type='electronics').all()
+    return render_template('shop.html', all_flags=current_flag_state.to_json_string(), user_context=user_json,products=products)
 
 
 @core.route('/dashboard')
@@ -48,9 +57,13 @@ def dashboard():
     user = current_user.get_ld_user()
     current_flag_state = current_app.ldclient.all_flags_state(user)
     user_json = json.dumps(user)
-
-    liked_products = current_user.liked_products
-    return render_template('dashboard.html', all_flags=current_flag_state.to_json_string(), user_context=user_json, products=json.loads(liked_products))
+    product = []
+    if current_user.liked_products:
+        liked_products = json.loads(current_user.liked_products)
+        print(liked_products)
+    for ids in liked_products:
+        product.append(Products.query.get(int(ids)))
+    return render_template('dashboard.html', all_flags=current_flag_state.to_json_string(), user_context=user_json, products=product)
 
 
 @core.route('/register', methods=["GET", "POST"])
@@ -114,6 +127,7 @@ def sale_on():
 
 
 @core.route('/add-to-like')
+@login_required
 def add_to_like():
 
     if current_app.ldclient.variation('add-to-like', current_user.get_ld_user(), False):
@@ -126,10 +140,21 @@ def add_to_like():
             current_user.liked_products = "[]"
 
         liked_products = json.loads(current_user.liked_products)
+
         if not len(liked_products) >= max_allowed:
             # do not add it to liked items
+
             liked_products.append(request.args.get('p'))
             current_user.liked_products = json.dumps(list(set(liked_products)))
             db.session.commit()
 
+            return {}, 200
+    return {}, 404
+
+
+@core.route('/remove-all-likes')
+@login_required
+def remove_all_likes():
+    current_user.liked_products = "[]"
+    db.session.commit()
     return {}, 200

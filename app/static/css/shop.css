@@ -86,27 +86,6 @@ a:hover {
 		transform: scale(1.2,1.2) rotate(5deg);
 }
 
-.section-products #product-1 .part-1::before {
-    background: url("https://images.pexels.com/photos/157675/fashion-men-s-individuality-black-and-white-157675.jpeg") no-repeat center;
-    background-size: cover;
-		transition: all 0.3s;
-}
-
-.section-products #product-2 .part-1::before {
-    background: url("https://images.pexels.com/photos/1183266/pexels-photo-1183266.jpeg") no-repeat center;
-    background-size: cover;
-}
-
-.section-products #product-3 .part-1::before {
-    background: url("https://images.pexels.com/photos/428340/pexels-photo-428340.jpeg") no-repeat center;
-    background-size: cover;
-}
-
-.section-products #product-4 .part-1::before {
-    background: url("https://images.pexels.com/photos/3193731/pexels-photo-3193731.jpeg") no-repeat center;
-    background-size: cover;
-}
-
 .section-products .single-product .part-1 .discount,
 .section-products .single-product .part-1 .new {
     position: absolute;

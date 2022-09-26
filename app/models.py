@@ -71,3 +71,4 @@ class Products(db.Model):
     image_url = db.Column(db.String(1000), nullable=True)
     product_type = db.Column(db.String(100))
     on_sale = db.Column(db.Boolean,default=False)
+    sale_price = db.Column(db.Float())
