@@ -26,7 +26,8 @@
                         background-size: cover;
                 }
         </style>
-        
+
+
 {% endblock %}
 
         {% block header %}
@@ -48,6 +49,8 @@
                                 </div>
                         </div>
                 </div>
+                
+
                 <div class="row">
                         <!-- Single Product -->
                         <div class="col-md-6 col-lg-4 col-xl-3">
@@ -56,7 +59,7 @@
                                         <div class="part-1">
                                                 <ul>
                                                         <li><a href="#"><i class="fas fa-shopping-cart"></i></a></li>
-                                                        <li><a href="#"><i class="fas fa-heart"></i></a></li>
+                                                        <li><a onclick="onclickevent('heart', 1)" href="#"><i class="fas fa-heart"></i></a></li>
                                                         <li><a href="#"><i class="fas fa-plus"></i></a></li>
                                                         <li><a href="#"><i class="fas fa-expand"></i></a></li>
                                                 </ul>
@@ -74,8 +77,8 @@
                                         <div class="part-1">
                                                 <span class="discount">15% off</span>
                                                 <ul>
-                                                        <li><a href="#"><i class="fas fa-shopping-cart"></i></a></li>
-                                                        <li><a href="#"><i class="fas fa-heart"></i></a></li>
+                                                        <li ><a href="#"><i class="fas fa-shopping-cart"></a></i></li>
+                                                        <li><a onclick="onclickevent('heart', 2)" href="#"><i class="fas fa-heart"></i></a></li>
                                                         <li><a href="#"><i class="fas fa-plus"></i></a></li>
                                                         <li><a href="#"><i class="fas fa-expand"></i></a></li>
                                                 </ul>
@@ -92,7 +95,7 @@
                                         <div class="part-1">
                                                 <ul>
                                                         <li><a href="#"><i class="fas fa-shopping-cart"></i></a></li>
-                                                        <li><a href="#"><i class="fas fa-heart"></i></a></li>
+                                                        <li><a onclick="onclickevent('heart', 3)" href="#"><i class="fas fa-heart"></i></a></li>
                                                         <li><a href="#"><i class="fas fa-plus"></i></a></li>
                                                         <li><a href="#"><i class="fas fa-expand"></i></a></li>
                                                 </ul>
@@ -111,7 +114,7 @@
                                                 <span class="new">new</span>
                                                 <ul>
                                                         <li><a href="#"><i class="fas fa-shopping-cart"></i></a></li>
-                                                        <li><a href="#"><i class="fas fa-heart"></i></a></li>
+                                                        <li><a onclick="onclickevent('heart', 4)" href="#"><i class="fas fa-heart"></i></a></li>
                                                         <li><a href="#"><i class="fas fa-plus"></i></a></li>
                                                         <li><a href="#"><i class="fas fa-expand"></i></a></li>
                                                 </ul>
@@ -128,7 +131,7 @@
                                         <div class="part-1">
                                                 <ul>
                                                         <li><a href="#"><i class="fas fa-shopping-cart"></i></a></li>
-                                                        <li><a href="#"><i class="fas fa-heart"></i></a></li>
+                                                        <li><a onclick="onclickevent('heart', 5)" href="#"><i class="fas fa-heart"></i></a></li>
                                                         <li><a href="#"><i class="fas fa-plus"></i></a></li>
                                                         <li><a href="#"><i class="fas fa-expand"></i></a></li>
                                                 </ul>
@@ -147,7 +150,7 @@
                                                 <span class="discount">15% off</span>
                                                 <ul>
                                                         <li><a href="#"><i class="fas fa-shopping-cart"></i></a></li>
-                                                        <li><a href="#"><i class="fas fa-heart"></i></a></li>
+                                                        <li><a onclick="onclickevent('heart', 6)" href="#"><i class="fas fa-heart"></i></a></li>
                                                         <li><a href="#"><i class="fas fa-plus"></i></a></li>
                                                         <li><a href="#"><i class="fas fa-expand"></i></a></li>
                                                 </ul>
@@ -164,7 +167,7 @@
                                         <div class="part-1">
                                                 <ul>
                                                         <li><a href="#"><i class="fas fa-shopping-cart"></i></a></li>
-                                                        <li><a href="#"><i class="fas fa-heart"></i></a></li>
+                                                        <li><a onclick="onclickevent('heart', 7)" href="#"><i class="fas fa-heart"></i></a></li>
                                                         <li><a href="#"><i class="fas fa-plus"></i></a></li>
                                                         <li><a href="#"><i class="fas fa-expand"></i></a></li>
                                                 </ul>
@@ -183,7 +186,7 @@
                                                 <span class="new">new</span>
                                                 <ul>
                                                         <li><a href="#"><i class="fas fa-shopping-cart"></i></a></li>
-                                                        <li><a href="#"><i class="fas fa-heart"></i></a></li>
+                                                        <li><a onclick="onclickevent('heart', 8)" href="#"><i class="fas fa-heart"></i></a></li>
                                                         <li><a href="#"><i class="fas fa-plus"></i></a></li>
                                                         <li><a href="#"><i class="fas fa-expand"></i></a></li>
                                                 </ul>
@@ -197,5 +200,23 @@
                 </div>
         </div>
 </section>
-
+<script>
+        function onclickevent(action_name,p) {
+                if(action_name=='heart'){
+                        var myHeaders = new Headers();
+                        var requestOptions = {
+                        method: 'GET',
+                        headers: myHeaders,
+                        redirect: 'follow'
+                        };
+                        fetch("{{url_for('core.add_to_like')}}" +"?" + new URLSearchParams({
+                                p: p,
+                            }), requestOptions)
+                        .then(response => response.text())
+                        .then(result => console.log(result))
+                        .catch(error => console.log('error', error));
+                                        }
+                                }
+        
+        </script>
 {% endblock %}

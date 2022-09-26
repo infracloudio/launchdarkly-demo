@@ -11,7 +11,6 @@ from ldclient.client import HTTPConfig
 from ldclient.feature_store import CacheConfig, InMemoryFeatureStore
 
 from app.db import db
-from app.models import AnonymousUser
 from app.util import get_ld_non_human_user
 
 login_manager = LoginManager()
@@ -39,6 +38,8 @@ def create_app():
 
     from app.routes import core
     from app.api import api
+    from app.models import AnonymousUser
+
 
 
     app.register_blueprint(core)
@@ -47,7 +48,7 @@ def create_app():
     login_manager.init_app(app)
     login_manager.login_view = "core.index"
     login_manager.anonymous_user = AnonymousUser
-    
+
     with app.app_context():
         from app.models import User, Products
         db.create_all()

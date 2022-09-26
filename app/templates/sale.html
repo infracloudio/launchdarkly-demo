@@ -1,0 +1,31 @@
+{% extends 'base.html' %}
+
+{% block stylesheet %}
+<style>
+    #bg {
+        position: fixed; 
+        top: -50%; 
+        left: -50%; 
+        width: 200%; 
+        height: 200%;
+      }
+      #bg img {
+        position: absolute; 
+        top: 0; 
+        left: 0; 
+        right: 0; 
+        bottom: 0; 
+        margin: auto; 
+        min-width: 50%;
+        min-height: 50%;
+      }
+</style>
+{% endblock %}
+{% block content %}
+
+<div id="bg">
+    <a href="{{ url_for('core.fashion')}}"><img src="https://www.optimizepress.com/wp-content/uploads/2014/11/Landing-page-templates-black-friday-cyber-monday13.webp" alt=""></a>
+</div>
+
+
+{% endblock %}

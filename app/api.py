@@ -56,8 +56,56 @@ def login():
 @api.route('/electronics', methods=['GET'])
 @token_required
 def list_electronics(current_user):
+
     try:
-        books = Products.query.all()
+        books = Products.query.filter_by(product_type='electronics').all()
+        return jsonify({
+            "message": "successfully retrieved all products",
+            "data": books
+        })
+    except Exception as e:
+        current_app.logger.debug(e, exc_info=True)
+        return jsonify({
+            "message": "failed to retrieve all products",
+            "error": str(e),
+            "data": None
+        }), 500
+
+
+@api.route('/fashion', methods=['GET'])
+@token_required
+def list_fashion(current_user):
+    # add a additional field in api response with feature flag
+    try:
+                
+        books = Products.query.filter_by(product_type='fashion').all()
+
+        data = {
+            "message": "successfully retrieved all products",
+            "data": books
+        }
+        
+        if current_app.ldclient.variation('add-new-field-total', current_user.get_ld_user(), False):
+            data.update({'count': len(books)})
+
+        return jsonify(data)
+    except Exception as e:
+        current_app.logger.debug(e, exc_info=True)
+        return jsonify({
+            "message": "failed to retrieve all products",
+            "error": str(e),
+            "data": None
+        }), 500
+
+
+@api.route('/sale', methods=['GET'])
+@token_required
+def sale_list(current_user):
+
+    try:
+        books = None
+        if current_app.ldclient.variation('sale-api', current_user.get_ld_user(), False):
+            books = Products.query.filter_by(on_sale=True).all()
         return jsonify({
             "message": "successfully retrieved all products",
             "data": books
