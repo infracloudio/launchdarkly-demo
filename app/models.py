@@ -3,6 +3,7 @@ import time
 import uuid
 from flask_login import UserMixin, AnonymousUserMixin
 from werkzeug.security import check_password_hash, generate_password_hash
+from dataclasses import dataclass
 
 from app.db import db
 from flask import current_app
@@ -23,6 +24,7 @@ class AnonymousUser(AnonymousUserMixin):
         return user
 
 
+@dataclass
 class User(UserMixin, db.Model):
 
     id = db.Column(db.Integer, primary_key=True)
@@ -53,3 +55,16 @@ class User(UserMixin, db.Model):
 
     def get_email_hash(self):
         return hashlib.md5(self.email.encode()).hexdigest()
+
+    def __repr__(self) -> str:
+        return f'User: {self.email}'
+
+
+@dataclass
+class Products(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    name = db.Column(db.String(200), index=True, unique=True)
+    description = db.Column(db.String(150), index=True, nullable=True)
+    price = db.Column(db.Float())
+    image_url = db.Column(db.String(1000), nullable=True)
+    product_type = db.Column(db.String(100))

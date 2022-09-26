@@ -18,12 +18,7 @@
                 <!-- <li class="nav-item"> <a class="nav-link" href="#">Career</a> </li> -->
             </ul>
 
-            <!-- make it a feature flag -->
-            <form class="d-flex" role="search" data-form-type="">
-                <input class="form-control me-2" type="search" placeholder="Search" data-form-type="">
-                <button class="btn btn-outline-light" type="submit" data-form-type=""
-                    data-dashlane-label="true">Search</button>
-            </form>
+
             {% if current_user.is_authenticated %}
             <button class="btn btn-outline-dark d-flex me-2 ms-2"> <a class="nav-link"
                     href="{{ url_for('core.logout')}}"> Logout </a></button>

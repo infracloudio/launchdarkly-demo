@@ -19,7 +19,7 @@ docker run -p 5000:5000 ld-demo
 
 ```sh
 # Generate Migration
-flask --app.run db migrate -m "Message here"
+flask --app app.run db migrate -m "Message here"
 # upgrade db
-flask --app.run db upgrade
+flask --app app.run db upgrade
 ```

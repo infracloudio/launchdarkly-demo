@@ -1,5 +1,6 @@
 import logging
 import os
+import subprocess
 
 import ldclient
 from flask import Flask
@@ -10,6 +11,7 @@ from ldclient.client import HTTPConfig
 from ldclient.feature_store import CacheConfig, InMemoryFeatureStore
 
 from app.db import db
+from app.models import AnonymousUser
 from app.util import get_ld_non_human_user
 
 login_manager = LoginManager()
@@ -18,27 +20,36 @@ login_manager = LoginManager()
 def create_app():
 
     app = Flask(__name__)
+    
+    VERSION = subprocess.check_output(["git", "log", "-1", "--pretty=%h"]).decode('utf-8').rstrip()
+    app.config['VERSION'] = VERSION
+    app.logger.info(f"App Version Running: {VERSION}")
     app.secret_key = "2093nifoskh@324%fiafaf/"
     app.config["SQLALCHEMY_DATABASE_URI"] = "sqlite:///ld-demo.db"
     app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 
-    app.config["LD_CLIENT_KEY"] = os.environ['LD_CLIENT_KEY']
-    logging.info(app.config["LD_CLIENT_KEY"])
+    app.config["LD_SDK_KEY"] = os.environ['LD_SDK_KEY']
+    app.logger.info(f'SDK Key: {app.config["LD_SDK_KEY"]}')
     app.config["LD_FRONTEND_KEY"] = os.environ['LD_FRONTEND_KEY']
-    logging.info(app.config["LD_FRONTEND_KEY"])
+    app.logger.info(f'Client Key: {app.config["LD_FRONTEND_KEY"]}')
 
     app.ldclient = setup_ld_client(app)
 
     db.init_app(app)
 
     from app.routes import core
+    from app.api import api
+
 
     app.register_blueprint(core)
+    app.register_blueprint(api,url_prefix='/api')
+
     login_manager.init_app(app)
     login_manager.login_view = "core.index"
-
+    login_manager.anonymous_user = AnonymousUser
+    
     with app.app_context():
-        from app.models import User
+        from app.models import User, Products
         db.create_all()
 
     migrate = Migrate(app, db)
@@ -52,11 +63,8 @@ def create_app():
 
         app.logger.info(f"Log level: {logLevel}")
 
-        # set app
         app.logger.setLevel(logLevel)
-        # set werkzeug
         logging.getLogger("werkzeug").setLevel(logLevel)
-        # set root
         logging.getLogger().setLevel(logLevel)
 
     return app
@@ -72,9 +80,10 @@ def load_user(id):
 def setup_ld_client(app) -> ldclient.LDClient:
 
     featureStore = InMemoryFeatureStore()
-    LD_CLIENT_KEY = app.config["LD_CLIENT_KEY"]
+    LD_SDK_KEY = app.config["LD_SDK_KEY"]
+    LD_FRONTEND_KEY = app.config["LD_FRONTEND_KEY"]
     ld_config = LdConfig(
-        sdk_key=LD_CLIENT_KEY,
+        sdk_key=LD_SDK_KEY,
         http=HTTPConfig(connect_timeout=30, read_timeout=30),
         feature_store=featureStore,
         inline_users_in_events=True

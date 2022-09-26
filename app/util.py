@@ -1,8 +1,10 @@
 """
 Utility Functions
 """
-import socket
 import logging
+import socket
+
+
 
 def get_ld_non_human_user(request=None):
     """
@@ -23,4 +25,3 @@ def get_ld_non_human_user(request=None):
     }
     logging.debug(user)
     return user
-
