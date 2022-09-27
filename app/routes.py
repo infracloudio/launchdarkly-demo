@@ -77,11 +77,15 @@ def dashboard():
     
     for ids in liked_products:
         product.append(Products.query.get(int(ids)))
-    
+        
+    bell_icon=current_app.ldclient.variation('bell-icon', current_user.get_ld_user(), False)
+
+
     return render_template('dashboard.html',
                            all_flags=current_flag_state.to_json_string(),
                            user_context=user_json,
-                           products=product)
+                           products=product,
+                           bell_icon=bell_icon)
 
 
 @core.route('/register', methods=["GET", "POST"])
