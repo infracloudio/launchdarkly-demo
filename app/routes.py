@@ -27,7 +27,9 @@ def index():
     if current_app.ldclient.variation('redirect-to-sale', current_user.get_ld_user(), False):
         return redirect(url_for("core.sale_on"))
 
-    return render_template('index.html', all_flags=current_flag_state.to_json_string(), user_context=user_json)
+    return render_template('index.html',
+                           all_flags=current_flag_state.to_json_string(),
+                           user_context=user_json)
 
 
 @core.route('/fashion')
@@ -38,7 +40,11 @@ def fashion():
     current_flag_state = current_app.ldclient.all_flags_state(user)
     user_json = json.dumps(user)
     products = Products.query.filter_by(product_type='fashion').all()
-    return render_template('shop.html', all_flags=current_flag_state.to_json_string(), user_context=user_json,products=products)
+    
+    return render_template('shop.html',
+                           all_flags=current_flag_state.to_json_string(),
+                           user_context=user_json,
+                           products=products)
 
 
 @core.route('/electronics')
@@ -47,8 +53,13 @@ def electronics():
     user = current_user.get_ld_user()
     current_flag_state = current_app.ldclient.all_flags_state(user)
     user_json = json.dumps(user)
+    
     products = Products.query.filter_by(product_type='electronics').all()
-    return render_template('shop.html', all_flags=current_flag_state.to_json_string(), user_context=user_json,products=products)
+    
+    return render_template('shop.html',
+                           all_flags=current_flag_state.to_json_string(),
+                           user_context=user_json,
+                           products=products)
 
 
 @core.route('/dashboard')
@@ -57,13 +68,20 @@ def dashboard():
     user = current_user.get_ld_user()
     current_flag_state = current_app.ldclient.all_flags_state(user)
     user_json = json.dumps(user)
+    
     product = []
+    
     if current_user.liked_products:
         liked_products = json.loads(current_user.liked_products)
         print(liked_products)
+    
     for ids in liked_products:
         product.append(Products.query.get(int(ids)))
-    return render_template('dashboard.html', all_flags=current_flag_state.to_json_string(), user_context=user_json, products=product)
+    
+    return render_template('dashboard.html',
+                           all_flags=current_flag_state.to_json_string(),
+                           user_context=user_json,
+                           products=product)
 
 
 @core.route('/register', methods=["GET", "POST"])
@@ -100,15 +118,20 @@ def login():
         flash("you're authenticated")
         return redirect(url_for("core.dashboard"))
     if request.method == "POST":
+
         user = User.query.filter_by(email=request.form["userEmail"]).first()
+        
         if user is None or not user.check_password(request.form["inputPassword"]):
             flash("Invalid username or password")
             return redirect(url_for("core.index"))
+        
         login_user(user)
 
         next_page = request.args.get("next")
+        
         if not next_page or urlparse(next_page).netloc != "":
             next_page = url_for("core.dashboard")
+        
         return redirect(next_page)
 
 
@@ -132,6 +155,7 @@ def add_to_like():
 
     if current_app.ldclient.variation('add-to-like', current_user.get_ld_user(), False):
         if len(request.args) < 1:
+            current_app.logger.warning('No args in request')
             return {}, 500
         max_allowed = current_app.ldclient.variation('max-like-allowed', current_user.get_ld_user(), 10)
 
@@ -140,7 +164,6 @@ def add_to_like():
             current_user.liked_products = "[]"
 
         liked_products = json.loads(current_user.liked_products)
-
         if not len(liked_products) >= max_allowed:
             # do not add it to liked items
 
@@ -149,6 +172,8 @@ def add_to_like():
             db.session.commit()
 
             return {}, 200
+        else:
+            current_app.logger.info("No of liked product is greater than max allowed")
     return {}, 404
 
 

@@ -49,7 +49,7 @@
                                                 <!-- <span class="new">new</span> -->
                                                 <ul>
                                                         <li><a href="#"><i class="fas fa-shopping-cart"></i></a></li>
-                                                        <li><a onclick="onclickevent('heart', {{product.id}})" href="#"><i class="fas fa-heart"></i></a></li>
+                                                        <li class="like-button"><a onclick="onclickevent('heart', {{product.id}})" href="#"><i class="fas fa-heart"></i></a></li>
                                                         <li><a href="#"><i class="fas fa-plus"></i></a></li>
                                                         <li><a href="#"><i class="fas fa-expand"></i></a></li>
                                                 </ul>
@@ -68,6 +68,23 @@
         </div>
 </section>
 <script>
+        var renderLikeButton = function() {
+                var showFeature = ldclient.variation("add-to-like", false);
+                var displayWidget = document.getElementsByClassName('like-button');
+                if (displayWidget) {
+                    if (showFeature) {
+                        for (let i = 0; i < displayWidget.length; i++) {
+                                displayWidget[i].style.display = "";
+                              }
+                    } else {
+                        for (let i = 0; i < displayWidget.length; i++) {
+                                displayWidget[i].style.display = "none";
+                              }
+                    }
+                }
+       
+       
+           }
         function onclickevent(action_name,p) {
                 if(action_name=='heart'){
                         var myHeaders = new Headers();
@@ -84,6 +101,12 @@
                         .catch(error => console.log('error', error));
                                         }
                                 }
-        
+
+        ldclient.waitForInitialization().then(function() {
+                renderLikeButton();
+                })
+        ldclient.on('change', function() {
+        renderLikeButton();
+        });
         </script>
 {% endblock %}
