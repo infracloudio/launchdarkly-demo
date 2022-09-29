@@ -75,6 +75,7 @@ def list_electronics(current_user):
 @token_required
 def list_fashion(current_user):
     # add a additional field in api response with feature flag
+    
     try:
                 
         query_result = Products.query.filter_by(product_type='fashion').all()
