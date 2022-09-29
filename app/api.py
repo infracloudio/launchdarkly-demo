@@ -58,7 +58,6 @@ def list_electronics(current_user):
     try:
         data = Products.query.filter_by(product_type='electronics').all()
         product_schema = ProductSchema(many=True)
-        current_app.logger.error(product_schema.dump(data))
         return jsonify({
             "message": "successfully retrieved all products",
             "data": product_schema.dump(data)
@@ -108,7 +107,6 @@ def sale_list(current_user):
             query_result = Products.query.filter_by(on_sale=True).all()
             product_schema = ProductSchema(many=True)
             data = product_schema.dump(query_result)
-
         return jsonify({
             "message": "successfully retrieved all products",
             "data": data
