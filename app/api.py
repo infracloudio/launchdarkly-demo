@@ -88,7 +88,7 @@ def list_fashion(current_user):
             "data": product_schema.dump(query_result)
         }
         
-        if current_app.ldclient.variation('add-new-field-total', current_user.get_ld_user(), False):
+        if current_app.ldclient.variation('add-field-total', current_user.get_ld_user(), False):
             data.update({'count': len(data)})
 
         return jsonify(data)
