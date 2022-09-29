@@ -35,9 +35,9 @@ def create_app():
 
     db.init_app(app)
 
-    from app.routes import core
     from app.api import api
     from app.models import AnonymousUser, ma
+    from app.routes import core
     
 
 
@@ -52,7 +52,7 @@ def create_app():
     ma.init_app(app)
 
     with app.app_context():
-        from app.models import User, Products
+        from app.models import Products, User
         db.create_all()
         if not len(Products.query.all()):
             load_products()

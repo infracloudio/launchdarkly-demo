@@ -1,11 +1,8 @@
-import json
-from app.auth_middleware import token_required
-from flask import Blueprint, flash, redirect, render_template, request, url_for
-from flask_login import current_user, login_required, login_user, logout_user
 import jwt
-from app.db import db
-from app.models import ProductSchema, Products, User
-from flask import current_app, jsonify
+from flask import Blueprint, current_app, jsonify, request
+
+from app.auth_middleware import token_required
+from app.models import Products, ProductSchema, User
 
 api = Blueprint("api", __name__)
 
@@ -90,8 +87,8 @@ def list_fashion(current_user):
         
         if current_app.ldclient.variation('add-field-total', current_user.get_ld_user(), False):
             data.update({'count': len(data)})
-
         return jsonify(data)
+    
     except Exception as e:
         current_app.logger.debug(e, exc_info=True)
         return jsonify({

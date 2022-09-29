@@ -2,10 +2,10 @@
 Utility Functions
 """
 import logging
-from math import prod
 import socket
-from app.models import Products
+
 from app.db import db
+from app.models import Products
 
 
 def get_ld_non_human_user(request=None):

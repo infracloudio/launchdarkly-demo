@@ -3,10 +3,9 @@
 from functools import wraps
 
 import jwt
-from flask import  current_app, request
+from flask import current_app, request
 
 from app.models import User
-
 
 
 def token_required(f):
