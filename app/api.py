@@ -59,7 +59,7 @@ def login():
 def list_electronics(current_user):
 
     try:
-        data = Products.query.all()
+        data = Products.query.filter_by(product_type='electronics').all()
         product_schema = ProductSchema(many=True)
         current_app.logger.error(product_schema.dump(data))
         return jsonify({
