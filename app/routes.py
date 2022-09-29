@@ -39,6 +39,7 @@ def fashion():
     user = current_user.get_ld_user()
     current_flag_state = current_app.ldclient.all_flags_state(user)
     user_json = json.dumps(user)
+    
     products = Products.query.filter_by(product_type='fashion').all()
     
     return render_template('shop.html',
@@ -73,19 +74,20 @@ def dashboard():
     
     if current_user.liked_products:
         liked_products = json.loads(current_user.liked_products)
-        print(liked_products)
     
     for ids in liked_products:
         product.append(Products.query.get(int(ids)))
-        
+
     bell_icon=current_app.ldclient.variation('bell-icon', current_user.get_ld_user(), False)
+    payment_gateway=current_app.ldclient.variation('payment-gateway', current_user.get_ld_user(), 'Stripe')
 
 
     return render_template('dashboard.html',
                            all_flags=current_flag_state.to_json_string(),
                            user_context=user_json,
                            products=product,
-                           bell_icon=bell_icon)
+                           bell_icon=bell_icon,
+                           payment_gateway=payment_gateway)
 
 
 @core.route('/register', methods=["GET", "POST"])

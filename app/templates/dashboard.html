@@ -7,15 +7,13 @@
 <style>
 
     {% for product in products %}
-
     .section-products #product-{{ product.id }} .part-1::before {
         background: url("{{ product.image_url }}") no-repeat center;
         background-size: cover;
         transition: all 0.3s;
     }
-
     {% endfor %}
-
+    
 </style>
 
 
@@ -65,6 +63,10 @@
             </div>
 
             {% endfor %}
+
+           <div class="col-md-12 col-lg-12 text-center"> <h3>Payment Gateway Powered By: <b> {{ payment_gateway }} </b> </h2></div>
+        </div>
+
         </div>
 </section>
 {% endblock %}
