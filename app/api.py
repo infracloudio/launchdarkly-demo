@@ -1,9 +1,10 @@
+import json
 from app.auth_middleware import token_required
 from flask import Blueprint, flash, redirect, render_template, request, url_for
 from flask_login import current_user, login_required, login_user, logout_user
 import jwt
 from app.db import db
-from app.models import Products, User
+from app.models import ProductSchema, Products, User
 from flask import current_app, jsonify
 
 api = Blueprint("api", __name__)
@@ -58,10 +59,12 @@ def login():
 def list_electronics(current_user):
 
     try:
-        data = Products.query.filter_by(product_type='electronics').all()
+        data = Products.query.all()
+        product_schema = ProductSchema(many=True)
+        current_app.logger.error(product_schema.dump(data))
         return jsonify({
             "message": "successfully retrieved all products",
-            "data": data
+            "data": product_schema.dump(data)
         })
     except Exception as e:
         current_app.logger.debug(e, exc_info=True)
@@ -78,11 +81,11 @@ def list_fashion(current_user):
     # add a additional field in api response with feature flag
     try:
                 
-        data = Products.query.filter_by(product_type='fashion').all()
-
+        query_result = Products.query.filter_by(product_type='fashion').all()
+        product_schema = ProductSchema(many=True)
         data = {
             "message": "successfully retrieved all products",
-            "data": data
+            "data": product_schema.dump(query_result)
         }
         
         if current_app.ldclient.variation('add-new-field-total', current_user.get_ld_user(), False):
@@ -105,7 +108,10 @@ def sale_list(current_user):
     try:
         data = None
         if current_app.ldclient.variation('sale-api', current_user.get_ld_user(), False):
-            data = Products.query.filter_by(on_sale=True).all()
+            query_result = Products.query.filter_by(on_sale=True).all()
+            product_schema = ProductSchema(many=True)
+            data = product_schema.dump(query_result)
+
         return jsonify({
             "message": "successfully retrieved all products",
             "data": data
