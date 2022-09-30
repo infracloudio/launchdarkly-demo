@@ -64,3 +64,20 @@ flask --app app.run db upgrade
 
 ## To Make API requests
 - Install Postman or Curl
+
+
+## Implemented Flag keys and type
+
+- `payment-gateway` type - boolean.
+- `bell-icon` type - boolean.
+- `ariticial-delay` type - boolean
+- `max-like-allowed` type - number
+- `add-to-like` type - boolean
+- `redirect-to-sale` type - boolean
+- `disable-registration` type - boolean
+- `add-field-total` type - boolean
+- `set-logging-level` type - number
+- `sale-api` type - boolean
+- `nav-dark` type - boolean
+- `search-feature` type - boolean
+- `dark-theme-button` type - boolean
