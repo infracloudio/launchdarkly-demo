@@ -1,6 +1,7 @@
 # LaunchDarkly Demo
 
-## How to run locally
+## How to run Flask Application
+
 
 ```sh
 # Install Virtualenv
@@ -29,6 +30,8 @@ LD_SDK_KEY=#
 LD_FRONTEND_KEY=#
 ```
 
+## Run your Flask application
+
 ```sh
 # Make sure nothing is running on port 5000
 flask --app app.run --debug run
@@ -36,14 +39,19 @@ flask --app app.run --debug run
 # http://localhost:5000
 
 ```
-## Run application using Docker.
+## Run Flask application using Docker.
+
+You can run this application by creating a image and then running it or Using pre-built image available on docker hub.
+
+### 1. Build and Run.
+
 ```sh
 # Build Image
 docker build . -t ld-demo
 # Run container
 docker run -p 5000:5000 ld-demo -e LD_FRONTEND_KEY="" -e LD_SDK_KEY=""
 ```
-### Using Pre-built Docker Image
+### 2. Using Pre-built Docker Image
 
 ```
 # Get tag value from Github Releases.
