@@ -1,6 +1,6 @@
 # LaunchDarkly Demo
 
-## How to run Flask Application
+## How to run Flask Application locally
 
 
 ```sh
@@ -22,7 +22,7 @@ pip install -r requirements.txt
 
 ```
 
-## Set Environment values
+### Set Environment values
 - Copy .env.sample file into same directory with name .env 
 - Update LaunchDarkly Keys in it.
 ```
@@ -30,7 +30,7 @@ LD_SDK_KEY=#
 LD_FRONTEND_KEY=#
 ```
 
-## Run your Flask application
+### Run application
 
 ```sh
 # Make sure nothing is running on port 5000
