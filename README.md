@@ -45,6 +45,13 @@ docker build . -t ld-demo
 # Run container
 docker run -p 5000:5000 ld-demo -e LD_FRONTEND_KEY="" -e LD_SDK_KEY=""
 ```
+```
+Using DockerHub Image
+
+# Get tag value from Github Releases.
+
+docker run -p 5000:5000 ld-demo -e LD_FRONTEND_KEY="" -e LD_SDK_KEY="" sudhanshuinfracloud/launchdarkly-demo:latest
+```
 
 ## Migration & Upgrade
 
