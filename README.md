@@ -15,6 +15,10 @@ virtualenv venv
 source venv/source/activate
 # 2. For Windows
 source venv/Scripts/activate
+
+# Install all the requirements 
+pip install -r requirements.txt
+
 ```
 
 ## Set Environment values
